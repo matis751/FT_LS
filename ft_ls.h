@@ -1,4 +1,5 @@
 #include <fcntl.h>
+#include <unistd.h>
 #include <termios.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>

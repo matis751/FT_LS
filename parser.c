@@ -37,7 +37,7 @@ int parser(char *str, char *flag)
 	{
 		if(ft_strchr(*flag, FLAGS) == 0)
 		{
-			printf("ls: illegal option -- %c\nusage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n", *flag);
+			printf("ls: illegal option -- %c\nusage: ls [-lRartufgd] [file ...]\n", *flag);
 			return(-1);
 		}
 		flag++;
@@ -49,12 +49,16 @@ int parser(char *str, char *flag)
 int main(int ac, char **av)
 {
 	char *flag;
+	struct termios *termios_p;
+
+	termios_p = NULL;
 	flag = NULL;
-	struct termios *termios_p = NULL;
-
 	termios_p = (struct termios *)malloc(sizeof(*termios_p));
-	tcgetattr(0, termios_p);
-
+/*	tcgetattr(0, termios_p);
+	termios_p->c_oflag &= ONLRET;
+	termios_p->c_oflag |= ONLRET;
+	tcsetattr(0, TCSANOW, termios_p);
+*/
 	if(ac < 1 || av == NULL || av[1] == NULL)
 	{
 		printf("ls [-lRartufgd] [file ...]\n");
