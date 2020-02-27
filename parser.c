@@ -7,66 +7,86 @@ int ft_strchr(char c, char *str)
 
 	while(str[++x])
 		if(str[x] == c)
-			return(1);
-	return(0);
+			return(x);
+	return(-1);
 }
-int parser(char *str, char *flag)
+
+int flags_infos(char *str, int ret, t_infos *infos)
 {
 	char *tmp;
 	int len;
-	flag = NULL;
+	char *flags;
+	flags = NULL;
 	tmp = NULL;
 	len = 0;
-	if(ft_strchr('-', str) == 0)
-		return(0);
-	while(*str && *str != '-')
-		++str;
+	str += ret;
 	tmp = str;
-	while(*(++tmp))
-		len++;
-	if(!(flag = (char *)malloc(sizeof(char) * len + 1)))
+
+	while(*tmp && *tmp != ' ')
+		tmp++;
+	len = tmp - str;
+	if(!(flags = (char *)malloc(sizeof(char) * len + 1)))
 		return (-1);
-	while(*(++str) && len > 0)
+	while(*str && *str != ' ')
 	{
-		*flag = *(str);
-		flag++;
+		*flags = *(str);
+		flags++;
+		str++;
 	}
-	*flag = '\0';
-	flag -= sizeof(char) * len;
-	while(*flag)
+	*flags = '\0';
+	flags -= sizeof(char) * len;
+	while(*flags)
 	{
-		if(ft_strchr(*flag, FLAGS) == 0)
+		if(ft_strchr(*flags, FLAGS) == -1)
 		{
-			printf("ls: illegal option -- %c\nusage: ls [-lRartufgd] [file ...]\n", *flag);
+			printf("ls: illegal option -- %c\nusage: ls [-lRartufgd] [file ...]\n", *flags);
 			return(-1);
 		}
-		flag++;
+		flags++;
 	}
-	flag -= sizeof(char) * len;
+	flags -= sizeof(char) * len;
+	infos->flags = flags;
+	return(len + ret);
+}
+/*int file_infos(char *str, t_infos *infos)
+{
+
+
+}
+*/
+int parser(char *str, t_infos *infos)
+{
+	int ret;
+	ret = 0;
+
+	if((ret = ft_strchr('-', str)) != -1)
+		if((ret = flags_infos(str, ret + 1, infos)) == -1)
+			return (-1);
+	str += ret;
+	while(*(str++))
+		if(*str != ' ' && *str)
+		{
+			if((ret = file_infos(str, infos)) == -1);
+				return(-1);
+			str += ret;
+		}
+	printf("%c\n", *str);
 	return(0);
 }
 
 int main(int ac, char **av)
 {
-	char *flag;
-	struct termios *termios_p;
+	t_infos *infos;
 
-	termios_p = NULL;
-	flag = NULL;
-	termios_p = (struct termios *)malloc(sizeof(*termios_p));
-/*	tcgetattr(0, termios_p);
-	termios_p->c_oflag &= ONLRET;
-	termios_p->c_oflag |= ONLRET;
-	tcsetattr(0, TCSANOW, termios_p);
-*/
+	infos = NULL;
+	if(!(infos = (t_infos *)malloc(sizeof(t_infos))))
+		return(-1);
 	if(ac < 1 || av == NULL || av[1] == NULL)
 	{
-		printf("ls [-lRartufgd] [file ...]\n");
-		free(flag);
+		free(infos);
 		return(-1);
 	}
-	printf("lebleulepkjrocrvcev\nijdvbu\nwichwcnc\n");
-	if(parser(av[1], flag) == -1)
+	if(parser(av[1], infos) == -1)
 		return(-1);
 	return(0);
 

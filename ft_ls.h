@@ -15,3 +15,9 @@
 
 #define FLAGS "lRartufgd"
 
+typedef struct s_infos
+{
+	int nb_files;
+	char *flags;
+	char *name;
+}t_infos;
