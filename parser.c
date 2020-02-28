@@ -58,13 +58,15 @@ int nb_file(t_infos *infos, char *str, char **av, int *var)
 	x--;
 	if(ft_strchr('-', str) > -1)
 	{
+		if(av[x] != av[1])
+			return(-1);
 		*var += 1;
 	}
 	infos->nb_files = x;
 	return(x);
 }
 
-int parser(char **av, t_infos *infos)
+int parser(char **av, t_infos *infos) /**/
 {
 	char *str;
 	int ret;
@@ -78,7 +80,8 @@ int parser(char **av, t_infos *infos)
 	str = NULL;
 
 	str = av[1];
-	infos->nb_files = nb_file(infos, str, av, &x);
+	if(infos->nb_files = nb_file(infos, str, av, &x))
+		return(-1);
 	infos->name = (char **)malloc(sizeof(char) * infos->nb_files);
 	len = ft_strlen(str);
 	if((ret = ft_strchr('-', str)) != -1)
