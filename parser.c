@@ -48,82 +48,48 @@ int flags_infos(char *str, int ret, t_infos *infos)
 	infos->flags = flags;
 	return(len + ret);
 }
-int ft_memalloc(t_infos *infos, int len)
+int nb_file(t_infos *infos, char *str, char **av, int *var)
 {
-	char *tmp;
-	char *tmp_join;
-	int ret;
-	ret = 0;
-	tmp = NULL;
-	tmp_join = NULL;
-	if(infos->name == NULL)
-	{
-		if(!(infos->name = ft_strnew(len + 1)))
-			return(-1);
-	}
-	else
-	{
-		if(!(tmp_join = ft_strjoin(infos->name, tmp = ft_strnew(len + 1))))
-			return(-1);
-		ft_strdel(infos->name);
-		infos->name = tmp_join;
-		ret = len;
-	}
-	return(ret);
-}
-int file_infos(char *str, t_infos *infos)
-{
-	int len;
-	char *tmp;
-	int len_malloc;
-	tmp = NULL;
-	len_malloc = 0;
-	len = 0;
+	int x;
+	x = 1;
 
-	tmp = str;
-	while(*tmp != ' ' && *tmp)
+	while(av[x] != NULL)
+		x++;
+	x--;
+	if(ft_strchr('-', str) > -1)
 	{
-		tmp++;
-		len++;
+		*var += 1;
 	}
-	if((len_malloc = ft_memalloc(infos, len)) == -1)
-		return(-1);
-	infos->name += len_malloc;
-	while(str != tmp)
-	{
-		*infos->name = *str;
-		infos->name++;
-		str++;
-	}
-	return(len);
+	infos->nb_files = x;
+	return(x);
 }
 
-int parser(char *str, t_infos *infos)
+int parser(char **av, t_infos *infos)
 {
+	char *str;
 	int ret;
 	int ret_total;
+	int len;
+	int x;
+	x = 0;
 	ret_total = 0;
+	len = 0;
 	ret = 0;
+	str = NULL;
 
+	str = av[1];
+	infos->nb_files = nb_file(infos, str, av, &x);
+	infos->name = (char **)malloc(sizeof(char) * infos->nb_files);
+	len = ft_strlen(str);
 	if((ret = ft_strchr('-', str)) != -1)
 		if((ret = flags_infos(str, ret + 1, infos)) == -1)
 			return (-1);
-	if(ret > -1)
-		str += ret;
-	while(*str)
-	{
-		if(*str != ' ' && *str)
-		{
-			if((ret = file_infos(str, infos)) == -1)
-				return(-1);
-			str += ret;
-			infos->nb_files++;
-			ret_total += ret;
-		}
-		str++;
-		ret = 0;
-		infos->name -= ret_total;
-	}
+	printf("%d\n\n",x);
+	while(++x <= infos->nb_files)
+		infos->name[x] = ft_strdup(av[x]);
+	x = 0;
+	while(++x <= infos->nb_files)
+		printf("%s\n", infos->name[x]);
 	return(0);
 }
 int infos_init(t_infos **infos)
@@ -151,9 +117,8 @@ int main(int ac, char **av)
 		free(infos);
 		return(-1);
 	}
-	if(parser(av[1], infos) == -1)
+	if(parser(av, infos) == -1)
 		return(-1);
-	printf("%s\n", infos->name);
 	return(0);
 
 }

@@ -6,7 +6,7 @@
 /*   By: mel-oual <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 00:15:38 by mel-oual          #+#    #+#             */
-/*   Updated: 2020/02/28 01:46:27 by mel-oual         ###   ########.fr       */
+/*   Updated: 2020/02/28 04:33:12 by mel-oual         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int ft_strlen(const char *str)
 {
 	int len;
 	len = 0;
+	if(str == NULL || *str == '\0')
+		return(0);
 	while(str[len] != 0)
 		len++;
 	return(len);
@@ -41,6 +43,8 @@ char *ft_strjoin(char *s1, char *s2)
 	len_s1 = 0;
 	len_s2 = 0;
 
+	if(s1 == NULL || s2 == NULL)
+		return(NULL);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	if(!(tmp = (char *)malloc(sizeof(char) * len_s1 + len_s2 + 1)))
@@ -65,4 +69,30 @@ void ft_strdel(char *str)
 	if(str != NULL)
 		free(str);
 	str = NULL;
+}
+char *ft_strndup(char *str, int i)
+{
+	int x;
+	char *tmp;
+	x = -1;
+	tmp = NULL;
+	if(!(tmp = (char *)malloc(sizeof(char) * i + 1)))
+		return(0);
+	while(++x < i && str[x])
+		tmp[x] = str[x];
+	tmp[x] = '\0';
+	return(tmp);
+}
+char *ft_strdup(char *str)
+{
+	char *tmp;
+	int x;
+	x = -1;
+	tmp = NULL;
+
+	tmp = ft_strnew(ft_strlen(str) + 1);
+	while(str[++x])
+		tmp[x] = str[x];
+	tmp[x] = '\0';
+	return(tmp);
 }
