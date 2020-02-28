@@ -48,51 +48,45 @@ int flags_infos(char *str, int ret, t_infos *infos)
 	infos->flags = flags;
 	return(len + ret);
 }
-int nb_file(t_infos *infos, char *str, char **av, int *var)
+int nb_file(t_infos *infos, char **av, int *var)
 {
 	int x;
-	x = 1;
+	x = 0;
 
-	while(av[x] != NULL)
-		x++;
+	while(av[++x] != NULL)
+		if(ft_strchr('-', av[x]) > -1)
+		{
+			if(av[x] != av[1])
+				return(-1);
+		}
 	x--;
-	if(ft_strchr('-', str) > -1)
-	{
-		if(av[x] != av[1])
-			return(-1);
+	if(ft_strchr('-', av[1]) > -1)
 		*var += 1;
-	}
 	infos->nb_files = x;
 	return(x);
 }
 
-int parser(char **av, t_infos *infos) /**/
+int parser(char **av, t_infos *infos) /*Ecrit le nom des fichier passer en parametres et les option dans une struct "infos"*/
 {
 	char *str;
 	int ret;
-	int ret_total;
 	int len;
 	int x;
 	x = 0;
-	ret_total = 0;
 	len = 0;
 	ret = 0;
 	str = NULL;
 
 	str = av[1];
-	if((infos->nb_files = nb_file(infos, str, av, &x)) == -1)
+	if((infos->nb_files = nb_file(infos, av, &x)) == -1)
 		return(-1);
 	infos->name = (char **)malloc(sizeof(char) * infos->nb_files);
 	len = ft_strlen(str);
 	if((ret = ft_strchr('-', str)) != -1)
 		if((ret = flags_infos(str, ret + 1, infos)) == -1)
 			return (-1);
-	printf("%d\n\n",x);
 	while(++x <= infos->nb_files)
 		infos->name[x] = ft_strdup(av[x]);
-	x = 0;
-	while(++x <= infos->nb_files)
-		printf("%s\n", infos->name[x]);
 	return(0);
 }
 int infos_init(t_infos **infos)
