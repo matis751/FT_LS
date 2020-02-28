@@ -80,7 +80,7 @@ int parser(char **av, t_infos *infos) /**/
 	str = NULL;
 
 	str = av[1];
-	if(!(infos->nb_files = nb_file(infos, str, av, &x)))
+	if((infos->nb_files = nb_file(infos, str, av, &x)) == -1)
 		return(-1);
 	infos->name = (char **)malloc(sizeof(char) * infos->nb_files);
 	len = ft_strlen(str);
