@@ -1,0 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_libft.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mel-oual <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/28 00:15:38 by mel-oual          #+#    #+#             */
+/*   Updated: 2020/02/28 01:46:27 by mel-oual         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_ls.h"
+
+int ft_strlen(const char *str)
+{
+	int len;
+	len = 0;
+	while(str[len] != 0)
+		len++;
+	return(len);
+}
+
+char *ft_strnew(int len)
+{
+	char *str_new;
+	str_new = NULL;
+
+	if(!(str_new = (char *)malloc(sizeof(char) * len)))
+		return(NULL);
+	return(str_new);
+}
+
+char *ft_strjoin(char *s1, char *s2)
+{
+	char *tmp;
+	int len_s1;
+	int len_s2;
+
+	tmp = NULL;
+	len_s1 = 0;
+	len_s2 = 0;
+
+	len_s1 = ft_strlen(s1);
+	len_s2 = ft_strlen(s2);
+	if(!(tmp = (char *)malloc(sizeof(char) * len_s1 + len_s2 + 1)))
+		return(NULL);
+	while(s1 <= s1 + len_s1 && *s1)
+	{
+		*tmp = *s1;
+		tmp++;
+		s1++;
+	}
+	while(s2 <= s2 + len_s2 && *s2)
+	{
+		*tmp = *s2;
+		tmp++;
+		s2++;
+	}
+	*(tmp + 1) = '\0';
+	return(tmp - (len_s1 + len_s2));
+}
+void ft_strdel(char *str)
+{
+	if(str != NULL)
+		free(str);
+	str = NULL;
+}

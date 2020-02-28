@@ -21,3 +21,8 @@ typedef struct s_infos
 	char *flags;
 	char *name;
 }t_infos;
+
+void ft_strdel(char *str);
+char *ft_strjoin(char *s1, char *s2);
+char *ft_strnew(int len);
+int ft_strlen(const char *str);
