@@ -11,7 +11,7 @@ int ft_strchr(char c, char *str)
 	return(-1);
 }
 
-int flags_infos(char *str, int ret, t_infos *infos)
+int flags_infos(char *str, int ret, t_infos *infos)/*enregistres les flags et renvoies une erreur en cas d'options incorrectes'*/
 {
 	char *tmp;
 	int len;
@@ -48,7 +48,7 @@ int flags_infos(char *str, int ret, t_infos *infos)
 	infos->flags = flags;
 	return(len + ret);
 }
-int nb_file(t_infos *infos, char **av, int *var)
+int nb_file(t_infos *infos, char **av, int *var) /*calcul le nb de files passes en parametres*/
 {
 	int x;
 	x = 0;
@@ -89,7 +89,7 @@ int parser(char **av, t_infos *infos) /*Ecrit le nom des fichier passer en param
 		infos->name[x] = ft_strdup(av[x]);
 	return(0);
 }
-int infos_init(t_infos **infos)
+int infos_init(t_infos **infos) /*iinitialise la structure infos*/
 {
 	t_infos *tmp;
 	if(!(*infos = (t_infos *)malloc(sizeof(t_infos))))
