@@ -12,17 +12,6 @@
 
 #include "ft_ls.h"
 
-int ft_strchr(char c, char *str)
-{
-	int x;
-	x = -1;
-
-	while(str[++x])
-		if(str[x] == c)
-			return(x);
-	return(-1);
-}
-
 int flags_infos(char *str, int ret, t_infos *infos)/*enregistres les flags et renvoies une erreur en cas d'options incorrectes'*/
 {
 	char *tmp;
@@ -111,23 +100,4 @@ int infos_init(t_infos **infos) /*iinitialise la structure infos*/
 	tmp->flags = NULL;
 	tmp->nb_files = 0;
 	return(1);
-
-}
-
-int main(int ac, char **av)
-{
-	t_infos *infos;
-
-	infos = NULL;
-	if(!(infos_init(&infos)))
-		return(-1);
-	if(ac < 1 || av == NULL || av[1] == NULL)
-	{
-		free(infos);
-		return(-1);
-	}
-	if(parser(av, infos) == -1)
-		return(-1);
-	return(0);
-
 }

@@ -12,6 +12,17 @@
 
 #include "ft_ls.h"
 
+int ft_strchr(char c, char *str)
+{
+	int x;
+	x = -1;
+
+	while(str[++x])
+		if(str[x] == c)
+			return(x);
+	return(-1);
+}
+
 int ft_strlen(const char *str)
 {
 	int len;
