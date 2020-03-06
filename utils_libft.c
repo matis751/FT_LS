@@ -11,6 +11,17 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+void *ft_memset(void *b, int c, size_t len)
+{
+	unsigned i;
+
+	i = 0;
+	while (i < len)
+	{
+		((unsigned char*)b)[i++] = (unsigned char)c;
+	}
+	return (b);
+}
 
 int ft_strchr(char c, char *str)
 {

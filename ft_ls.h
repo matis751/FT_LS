@@ -38,6 +38,7 @@ typedef struct s_infos
 	char *flags;
 	char **name;
 }t_infos;
+
 typedef struct s_dir
 {
 
@@ -61,6 +62,7 @@ typedef struct s_disp
 
 /**** UTILS_LIBFT.C ****/
 void ft_strdel(char *str);
+void *ft_memset(void *b, int c, size_t len);
 char *ft_strjoin(char *s1, char *s2);
 char *ft_strdup(char *str);
 char *ft_strndup(char *str, int i);
@@ -75,14 +77,26 @@ int flags_infos(char *str, int ret, t_infos *infos);
 /**** LIST_REP.C ****/
 
 void display_op(struct dirent **list, int size);
-int get_max_len(t_dir *dir);
+int get_max_len(t_dir *dir, int size);
 int get_max_len_dir(struct dirent **dp, int size);
 void display_options(t_dir *str_dir);
 void    print_name_dir(struct dirent *dp, int num_sp);
 void    print_name(t_dir *dir, int num_sp);
-void alpha_sort_list(t_dir **tmp_dir);
+void alpha_sort_list(t_dir **tmp_dir,int size, int *max_len);
 void top_list_sw(t_dir *dir_1, t_dir *dir_2);
 void switch_dir(t_dir *dir_1, t_dir *dir_2);
 int dir_list(struct dirent *dp, DIR *dirp, t_dir **str);
 void *init_dir(t_dir **dir);
 t_dir *link_dir(t_dir *dir_1, t_dir *dir_2);
+void column_sort(t_dir **dir, int row, int col, int tab, int max_len);
+
+
+/**** UTILS_DISPLAY.C ****/
+t_dir *link_dir(t_dir *dir_1, t_dir *dir_2);
+void *init_dir(t_dir **dir);
+int dir_list(struct dirent *dp, DIR *dirp, t_dir **str);
+void switch_dir(t_dir *dir_1, t_dir *dir_2);
+int switch_d_dir(t_dir **tdir_1, t_dir **tdir_2);
+t_dir *mov_dir(t_dir *dir, int nb);
+void top_list_sw(t_dir *dir_1, t_dir *dir_2);
+

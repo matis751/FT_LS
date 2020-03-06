@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-int main(void)
+/*int main(void)
 {
 	int size;
 	int len = 0;
@@ -22,4 +22,15 @@ int main(void)
 	}
 	(void)closedir(dirp);
 	return (-1);
+}*/
+
+char *f(void)
+{
+	char tab[5];
+	return(&tab[0]);
+}
+int main()
+{
+	f();
+	return(1);
 }
