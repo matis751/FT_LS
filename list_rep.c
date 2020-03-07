@@ -78,17 +78,6 @@ void    print_name(t_dir *dir, int num_sp)
 	while(num_sp--)
 		printf(" ");
 }
-void    print_name_dir(struct dirent *dp, int num_sp)
-{
-	if((access(dp->d_name, X_OK) != -1) && (dp->d_type == DT_REG))
-		printf(RED "%s",dp->d_name);
-	if((access(dp->d_name, X_OK) == -1) && (dp->d_type == DT_REG))
-		printf(WHT"%s",dp->d_name);
-	if(dp->d_type == DT_DIR)
-		printf(CYN"%s",dp->d_name);
-	while(num_sp--)
-		printf(" ");
-}
 int select_print(t_dir **tmp, char *options)
 {
 	t_dir *ret = NULL;
@@ -210,21 +199,6 @@ void display_options(t_dir *str_dir)
 	ret = str_dir;
 	options(&str_dir, &max_len);
 }
-int get_max_len_dir(struct dirent **list, int size)
-{
-	int len;
-	struct dirent *dp = NULL;
-	len = 0;
-
-	while(size--)
-	{
-		dp = *list;
-		if(dp->d_namlen > len)
-			len = dp->d_namlen;
-		*(list++);
-	}
-	return(len);
-}
 int get_max_len(t_dir *dir, int size)
 {
 	int len;
@@ -238,48 +212,6 @@ int get_max_len(t_dir *dir, int size)
 	}
 	return(len);
 }
-void display_op(struct dirent **list, int size)
-{
-	struct winsize ws;
-	int col = 0;
-	int max_len = 0;
-	int r = 0;
-	int c = 0;
-	int x = 0;
-	int y = 0;
-	struct dirent *dp = NULL;
-	struct dirent **point = NULL;
-
-	dp = *list;
-	max_len = get_max_len_dir(list, size);
-	get_row_col(dp, &r, &c, size,max_len);
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &ws);
-	col = ws.ws_col;
-	printf("line %d col %d\n",r,c);
-	while(size--)
-	{
-		dp = *list;
-		if(dp == NULL)
-			break;
-		if(dp->d_name[0] != '.')
-		{
-			if(dp->d_namlen < col)
-			{
-				print_name_dir(dp, max_len - dp->d_namlen + 1);
-				col -= dp->d_namlen + max_len - dp->d_namlen + 1;
-				*(list++);
-			}
-			else
-			{
-				printf("\n");
-				col = ws.ws_col;
-				size++;
-			}
-		}
-		else
-			*(list++);
-	}
-}
 int main()
 {
 	struct dirent *dp = NULL;
@@ -290,14 +222,9 @@ int main()
 	dirp = opendir(".");
 	if (dirp == NULL)
 		printf ("ERROR\n");
-	/*if(dir_list(dp, dirp, &str_dir) == -1)
+	if(dir_list(dp, dirp, &str_dir) == -1)
 		return(-1);
 	display_options(str_dir);
-	*/
-	dp = readdir(dirp);
-	if((size = scandir(dp->d_name, &list, NULL, alphasort)) == -1)
-		return(-1);
-	display_op(list, size);
 	if(closedir(dirp) == -1)
 	{
 		printf("ERROR\n");
